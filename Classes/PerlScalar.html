@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PerlScalar Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/PerlScalar" class="dashAnchor"></a>
+    <a title="PerlScalar Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">Perl Docs</a></p>
+        <p class="header-right"><a href="https://github.com/my-mail-ru/swiftperl"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">Perl Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        PerlScalar Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/PerlArray.html">PerlArray</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PerlHash.html">PerlHash</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PerlInterpreter.html">PerlInterpreter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PerlObject.html">PerlObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PerlScalar.html">PerlScalar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PerlSub.html">PerlSub</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PerlValue.html">PerlValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/PerlError.html">PerlError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:Vs10Dictionary">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:Sq">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:P5Error7AnyPerl">AnyPerl</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/PerlBridgedObject.html">PerlBridgedObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/PerlNamedClass.html">PerlNamedClass</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>PerlScalar</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">PerlScalar</span> <span class="p">:</span> <span class="kt"><a href="../Classes/PerlValue.html">PerlValue</a></span><span class="p">,</span> <span class="kt">PerlDerived</span></code></pre>
+
+                </div>
+              </div>
+            <p>Provides a safe wrapper for Perl scalar (<code>SV</code>).
+Performs reference counting on initialization and deinitialization.</p>
+
+<p>Can contain any scalar SV with <code>SvTYPE(sv) &lt; SVt_PVAV</code> such as:
+undefined values, integers (<code>IV</code>), numbers (<code>NV</code>), strings (<code>PV</code>),
+references (<code>RV</code>), objects and others.
+Objects as exception have their own type <code><a href="../Classes/PerlObject.html">PerlObject</a></code> which
+provides more specific methods to work with them. Nevertheless
+objects are compatible with and can be represented as <code>PerlScalar</code>.</p>
+
+<p><a href='#cheat-sheet' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='cheat-sheet'>Cheat Sheet</h2>
+<a href='#creation-of-various-scalars' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='creation-of-various-scalars'>Creation of various scalars</h3>
+<pre class="highlight perl"><code><span class="k">my</span> <span class="nv">$int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$str</span> <span class="o">=</span> <span class="s"><q>Строченька</q></span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$intref</span> <span class="o">=</span> <span class="o">&lt;/span&gt;<span class="mi">10</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$arrayref</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="s"><q>OK</q></span><span class="p">];</span>
+<span class="k">my</span> <span class="nv">$hashref</span> <span class="o">=</span> <span class="p">{</span> <span class="nv">type</span> <span class="o">=&gt;</span> <span class="s"><q>string</q></span><span class="p">,</span> <span class="nv">value</span> <span class="o">=&gt;</span> <span class="mi">10</span> <span class="p">};</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">int</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">let</span> <span class="nv">str</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="s"><q>Строченька</q></span>
+<span class="k">let</span> <span class="nv">intref</span> <span class="o">=</span> <span class="kt">PerlScalar</span><span class="p">(</span><span class="nv">referenceTo</span><span class="p">:</span> <span class="kt">PerlScalar</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">arrayref</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="s"><q>OK</q></span><span class="p">];</span>
+<span class="k">let</span> <span class="nv">hashref</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="p">[</span><span class="s"><q>type</q></span><span class="p">:</span> <span class="s"><q>string</q></span><span class="p">,</span> <span class="s"><q>value</q></span><span class="p">:</span> <span class="mi">10</span><span class="p">]</span>
+</code></pre></p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT_S0_">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>SV</code> containing an undefined value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT4perlGSpVSC11interpreter__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(perl:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT4perlGSpVSC11interpreter__S0_">init(perl:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>SV</code> containing an undefined value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">perl</span><span class="p">:</span> <span class="kt">UnsafeInterpreterPointer</span> <span class="o">=</span> <span class="kt">UnsafeInterpreter</span><span class="o">.</span><span class="n">current</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTx4perlGSpVSC11interpreter__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:perl:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTx4perlGSpVSC11interpreter__S0_">init(_:perl:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>SV</code> containig a <code>v</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt">PerlSvConvertible</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">v</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">perl</span><span class="p">:</span> <span class="kt">UnsafeInterpreterPointer</span> <span class="o">=</span> <span class="kt">UnsafeInterpreter</span><span class="o">.</span><span class="n">current</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcuRxCS_9PerlValuerFT11referenceTox_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(referenceTo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcuRxCS_9PerlValuerFT11referenceTox_S0_">init(referenceTo:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>RV</code> pointing to a <code>sv</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Classes/PerlValue.html">PerlValue</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">referenceTo</span> <span class="nv">sv</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcuRxCS_9PerlValuexS_11PerlDerivedwx11UnsafeValueS_16UnsafeSvCastablerFxS0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcuRxCS_9PerlValuexS_11PerlDerivedwx11UnsafeValueS_16UnsafeSvCastablerFxS0_">init(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>RV</code> pointing to a <code>sv</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Classes/PerlValue.html">PerlValue</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">sv</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">PerlDerived</span><span class="p">,</span> <span class="kt">T</span><span class="o">.</span><span class="kt">UnsafeValue</span> <span class="p">:</span> <span class="kt">UnsafeSvCastable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTGSax_4perlGSpVSC11interpreter__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:perl:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTGSax_4perlGSpVSC11interpreter__S0_">init(_:perl:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>RV</code> pointing to a <code>AV</code> which contains <code>SV</code>s with elements of an <code>array</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt">PerlSvConvertible</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="kt">T</span><span class="p">],</span> <span class="nv">perl</span><span class="p">:</span> <span class="kt">UnsafeInterpreterPointer</span> <span class="o">=</span> <span class="kt">UnsafeInterpreter</span><span class="o">.</span><span class="n">current</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTGVs10DictionarySSx_4perlGSpVSC11interpreter__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:perl:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTGVs10DictionarySSx_4perlGSpVSC11interpreter__S0_">init(_:perl:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>RV</code> pointing to a <code>HV</code> which contains <code>SV</code>s with elements of a <code>dict</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt">PerlSvConvertible</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">dict</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">T</span><span class="p">],</span> <span class="nv">perl</span><span class="p">:</span> <span class="kt">UnsafeInterpreterPointer</span> <span class="o">=</span> <span class="kt">UnsafeInterpreter</span><span class="o">.</span><span class="n">current</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTGSqx_4perlGSpVSC11interpreter__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:perl:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcuRxS_17PerlSvConvertiblerFTGSqx_4perlGSpVSC11interpreter__S0_">init(_:perl:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>SV</code> containig an unwrapped value of a <code>v</code> if <code>v != nil</code> or an <code>undef</code> in other case.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt">PerlSvConvertible</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">v</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="nv">perl</span><span class="p">:</span> <span class="kt">UnsafeInterpreterPointer</span> <span class="o">=</span> <span class="kt">UnsafeInterpreter</span><span class="o">.</span><span class="n">current</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar7definedSb"></a>
+                    <a name="//apple_ref/swift/Property/defined" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar7definedSb">defined</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A boolean value indicating whether the <code>SV</code> is defined.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">defined</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar5isIntSb"></a>
+                    <a name="//apple_ref/swift/Property/isInt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar5isIntSb">isInt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A boolean value indicating whether the <code>SV</code> contains an integer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isInt</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar8isStringSb"></a>
+                    <a name="//apple_ref/swift/Property/isString" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar8isStringSb">isString</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A boolean value indicating whether the <code>SV</code> contains a character string.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isString</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar5isRefSb"></a>
+                    <a name="//apple_ref/swift/Property/isRef" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar5isRefSb">isRef</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A boolean value indicating whether the <code>SV</code> is a reference.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isRef</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar8isObjectSb"></a>
+                    <a name="//apple_ref/swift/Property/isObject" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar8isObjectSb">isObject</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A boolean value indicating whether the <code>SV</code> is an object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isObject</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar8referentGSqPS_7AnyPerl__"></a>
+                    <a name="//apple_ref/swift/Property/referent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar8referentGSqPS_7AnyPerl__">referent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Dereferences the <code>SV</code> if it is a reference. Returns <code>nil</code> if not.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">referent</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:P5Error7AnyPerl">AnyPerl</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Error10PerlScalar16debugDescriptionSS"></a>
+                    <a name="//apple_ref/swift/Property/debugDescription" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Error10PerlScalar16debugDescriptionSS">debugDescription</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A textual representation of the SV, suitable for debugging.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="k">var</span> <span class="nv">debugDescription</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT10nilLiteralT__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(nilLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT10nilLiteralT__S0_">init(nilLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates an instance which contains <code>undef</code>.</p>
+
+<p>Do not call this initializer directly. It is used by the compiler when
+you initialize an <code>PerlScalar</code> instance with a <code>nil</code> literal. For example:</p>
+
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">sv</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="kc">nil</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">nilLiteral</span><span class="p">:</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT14booleanLiteralSb_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(booleanLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT14booleanLiteralSb_S0_">init(booleanLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates an instance initialized to the specified boolean literal.</p>
+
+<p>Do not call this initializer directly. It is used by the compiler when
+you use a boolean literal. Instead, create a new <code>PerlScalar</code> instance by
+using one of the boolean literals <code>true</code> and <code>false</code>.</p>
+
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">sv</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter value: The value of the new instance.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">booleanLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT14integerLiteralSi_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(integerLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT14integerLiteralSi_S0_">init(integerLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates an instance from the given integer literal.</p>
+
+<p>Do not call this initializer directly. It is used by the compiler when
+you create a new <code>PerlScalar</code> instance by using an integer literal.
+Instead, create a new value by using a literal:</p>
+
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">x</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="mi">100</span>
+</code></pre>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter value: The new value.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">integerLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT20unicodeScalarLiteralSS_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(unicodeScalarLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT20unicodeScalarLiteralSS_S0_">init(unicodeScalarLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates an instance initialized to the given Unicode scalar value.</p>
+
+<p>Don&rsquo;t call this initializer directly. It may be used by the compiler when
+you initialize a <code>PerlScalar</code> using a string literal that contains a single
+Unicode scalar value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">unicodeScalarLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT30extendedGraphemeClusterLiteralSS_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(extendedGraphemeClusterLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT30extendedGraphemeClusterLiteralSS_S0_">init(extendedGraphemeClusterLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates an instance initialized to the given extended grapheme cluster
+literal.</p>
+
+<p>Don&rsquo;t call this initializer directly. It may be used by the compiler when
+you initialize a <code>PerlScalar</code> using a string literal containing a single
+extended grapheme cluster.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">extendedGraphemeClusterLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFT13stringLiteralSS_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(stringLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFT13stringLiteralSS_S0_">init(stringLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates an instance initialized to the given string value.</p>
+
+<p>Don&rsquo;t call this initializer directly. It is used by the compiler when you
+initialize a <code>PerlScalar</code> using a string literal. For example:</p>
+
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">sv</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="s">"My World"</span>
+</code></pre>
+
+<p>This assignment to the <code>sv</code> calls this string literal
+initializer behind the scenes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">stringLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFt12arrayLiteralGSaS0___S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(arrayLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFt12arrayLiteralGSaS0___S0_">init(arrayLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a reference to array from the given array literal.</p>
+
+<p>Do not call this initializer directly. It is used by the compiler
+when you use an array literal. Instead, create a new <code>PerlScalar</code> by using an
+array literal as its value. To do this, enclose a comma-separated list of
+values in square brackets. For example:</p>
+
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">mix</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="p">[</span><span class="kc">nil</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s">"use perl or die"</span><span class="p">]</span>
+</code></pre>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter elements: A variadic list of elements of the new array.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span> <span class="p">(</span><span class="n">arrayLiteral</span> <span class="nv">elements</span><span class="p">:</span> <span class="kt">PerlScalar</span><span class="o">...</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Error10PerlScalarcFt17dictionaryLiteralGSaTSSS0____S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(dictionaryLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Error10PerlScalarcFt17dictionaryLiteralGSaTSSS0____S0_">init(dictionaryLiteral:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a reference to hash initialized with a dictionary literal.</p>
+
+<p>Do not call this initializer directly. It is called by the compiler to
+handle dictionary literals. To use a dictionary literal as the initial
+value of a <code>PerlScalar</code>, enclose a comma-separated list of key-value pairs
+in square brackets. For example:</p>
+
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">header</span><span class="p">:</span> <span class="kt">PerlScalar</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">"Content-Length"</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span>
+    <span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/json"</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter elements: The key-value pairs that will make up the new
+dictionary. Each key in <code>elements</code> must be unique.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">dictionaryLiteral</span> <span class="nv">elements</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">PerlScalar</span><span class="p">)</span><span class="o">...</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="https://my.mail.ru/" target="_blank" rel="external">Mail.Ru Group</a>. All rights reserved. (Last updated: 2016-10-28)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

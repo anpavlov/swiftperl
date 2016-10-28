@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Perl  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Perl  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">Perl Docs</a></p>
+        <p class="header-right"><a href="https://github.com/my-mail-ru/swiftperl"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">Perl Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Perl  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/PerlArray.html">PerlArray</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PerlHash.html">PerlHash</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PerlInterpreter.html">PerlInterpreter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PerlObject.html">PerlObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PerlScalar.html">PerlScalar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PerlSub.html">PerlSub</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PerlValue.html">PerlValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/PerlError.html">PerlError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:Vs10Dictionary">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:Sq">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:P5Error7AnyPerl">AnyPerl</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/PerlBridgedObject.html">PerlBridgedObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/PerlNamedClass.html">PerlNamedClass</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <a href='#swift-and-perl-interoperability' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='swift-and-perl-interoperability'>Swift and Perl Interoperability</h1>
+
+<p><img src="https://img.shields.io/badge/Swift-3.0-orange.svg" alt="Swift: 3.0">
+<img src="https://img.shields.io/badge/OS-Linux-brightgreen.svg" alt="OS: Linux">
+<img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></p>
+
+<p><em>swiftperl</em> is designed to provide an easy and smooth interoperability between Swift and Perl languages.
+The primary goal is to write XS modules for Perl entirely in Swift,
+though running Perl Interpreter in Swift environment is also possible.</p>
+<a href='#prerequisites' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='prerequisites'>Prerequisites</h2>
+
+<ul>
+<li>Swift 3.0 Release</li>
+<li>Perl 5 (&gt;=5.10)</li>
+</ul>
+<a href='#getting-started' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='getting-started'>Getting Started</h2>
+
+<p>Ubuntu 15.10:</p>
+<pre class="highlight shell"><code>./gybme
+swift <span class="nb">test</span> -Xcc -isystem/usr/lib/x86_64-linux-gnu/perl/5.20/CORE -Xcc -isystem/usr/lib/x86_64-linux-gnu/perl5/5.20/Coro -Xcc -D_GNU_SOURCE -Xcc -DPERL_NO_GET_CONTEXT
+</code></pre>
+
+<p>CentOS 6:</p>
+<pre class="highlight shell"><code>./gybme
+<span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/usr/lib64/perl5/CORE/ swift <span class="nb">test</span> -Xcc -isystem/usr/lib64/perl5/CORE/ -Xcc -isystem/usr/lib64/perl5/vendor_perl/Coro/ -Xcc -D_GNU_SOURCE -Xcc -DPERL_NO_GET_CONTEXT -Xlinker -L/usr/lib64/perl5/CORE/
+</code></pre>
+<a href='#documentation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='documentation'>Documentation</h2>
+
+<p>For information on using <em>swiftperl</em>, see <a href="https://my-mail-ru.github.io/swiftperl/">Reference</a>.</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="https://my.mail.ru/" target="_blank" rel="external">Mail.Ru Group</a>. All rights reserved. (Last updated: 2016-10-28)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
